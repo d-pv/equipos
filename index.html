@@ -1,0 +1,134 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Generador de equipos</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+
+	.ancho{
+		box-sizing: border-box;
+		width:80vw;
+		margin-left: 10vw;
+		//margin-right: 10vw;
+		font-size: 3vh;
+		font-family: sans-serif;
+		margin-top: 3vh;
+	}
+	
+	.boton{
+		text-align: center;
+		border-radius: 6vh;
+		padding: 1vh 0 1vh 0;
+		cursor: pointer;
+		background: #3498db;
+		color: #fff;
+	    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+	    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+	    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+	    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+	    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+	}
+	
+	.boton:hover {
+		background: #3cb0fd;
+		background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+		background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+		background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+		background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+		background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+	}
+	
+	.label{
+		color:#999;
+		margin-bottom: -2vh;
+	}
+	
+	.titulo{
+		text-align: center;
+		color: #3498db;
+		text-transform: uppercase;
+	}
+	
+	h2{
+		font-size: 4vh;
+		text-decoration: underline;
+		font-style: bold;
+		padding-bottom: 0;
+	}
+	
+	ul{
+		list-style-type: square;
+		padding-left: 1em;
+	}
+	
+	li{
+		color:#666;
+	}
+	
+</style>
+</head>
+<body>
+	<div class="ancho titulo"><h1>Generador aleatorio de equipos</h1></div>
+	<div class="ancho label">Nombres:</div>
+	<textarea class="ancho" id="nombres" name="nombres" cols="30" rows="10" placeholder="Escribe los nombres, uno en cada línea"></textarea>
+	<div class="ancho label">Número de equipos:</div>
+	<input class="ancho" id="numero" type="number" name="numero" value="2">
+	<div class="ancho boton" onclick="LeerInputs();">Hacer Equipos</div>
+	<div class="ancho" id="resultado">
+	</div>
+	
+	<script>
+	function LeerInputs(){
+		var nombres = document.getElementById('nombres').value;
+		var lista   = nombres.split("\n");
+		var numero  = Math.max(1,Math.min(lista.length,parseInt(document.getElementById('numero').value)));
+		var equipos = unohastaN(numero);
+		var i, teamnum;
+		var listaequipos =[];
+		
+		lista = shuffle(lista); // barajar la lista de nombres
+		
+		for (i=0; i<numero; i++){
+			listaequipos[i] = ""; // inicializar a vacío cada equipo
+		}
+		
+		for (i=0; i<lista.length; i++){
+			teamnum = i % numero; // este es el equipo que le toca
+			listaequipos[teamnum] += "<li>" + lista[i] + "</li>"; // metemos ese nombre
+		}
+		listaequipos = shuffle(listaequipos); // el orden de los equipos también lo barajamos
+		
+		var finalstring = ""; // este es el string que al final va a aparecer donde "resultado"
+		for (i=0; i<numero; i++){
+			finalstring += "<h2>Equipo " + (i+1) + "</h2><br/><ul>" + listaequipos[i] + "</ul><br/>"; // añadimos el nombre del equipo, la lista de integrantes y metemos un salto de línea
+		}
+		document.getElementById('resultado').innerHTML = finalstring;
+	}
+	
+	function shuffle(a) {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
+	
+	function unohastaN(N){
+		var a=[];
+		for (var i=0;i<N;i++){
+			a.push(i+1);
+		}
+		return a;
+	}
+	</script>
+</body>
+</html>
